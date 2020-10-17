@@ -39,7 +39,7 @@ class create_report:
         return c
 
 # Complience Calculations
-def compleince(url, yes_score , no_socre , na_socre ,type_of_score):
+def compleince(url, yes_score , no_socre , na_socre ,null_socre,type_of_score):
 
     major = requests.get(url=url)
     data = major.json()
@@ -48,36 +48,36 @@ def compleince(url, yes_score , no_socre , na_socre ,type_of_score):
         for ii in data[i]:
             if data[i][ii] == 'yes':
                 data[i][ii] = yes_score
-            if data[i][ii] == 'no':
+            elif data[i][ii] == 'no':
                 data[i][ii] = no_socre
-            elif data[i][ii] == None:
-                pass
             elif data[i][ii] == 'na':
                 data[i][ii] = na_socre
+            elif data[i][ii] is None:
+                data[i][ii] = null_socre
 
     complience = []
+
     for i in range(length):
         sum = 0;
         owner = data[i]['g2/prdcr_nm']
         for ii in data[i]:
             if type(data[i][ii]) == int:
                 sum = sum + data[i][ii]
-        score = sum / len(data[i])
-        score = round(score,0)
+        #score = sum / len(data[i])
 
-        complience.append( {'name': owner, type_of_score: score } )
+        complience.append( {'name': owner, type_of_score: sum } )
 
     return list(complience)
 
 
 def merge_lists(base_url):
-    Mm = compleince(url=base_url+'/type/major', na_socre=100, yes_score=100, no_socre=0, type_of_score='major')
-    mm = compleince(url=base_url+'/type/minor', na_socre=50, yes_score=95, no_socre=75, type_of_score='minor')
-
+    Mm = compleince(url=base_url+'/type/major', na_socre=1, yes_score=1, no_socre=1,null_socre='_', type_of_score='major')
+    mm = compleince(url=base_url+'/type/minor', na_socre=0, yes_score=1, no_socre=-1,null_socre='_', type_of_score='minor')
+    """
     for iii in range(len(mm)):
-       complience_score = round(((115 - mm[iii]['minor']) * 0.05) , 0)
+       complience_score = round(((mm[iii]['minor']/115) * 100) , 0)
        cScore = {'Minor Must control points': complience_score}
-       mm[iii].update(cScore)
+       mm[iii].update(cScore)"""
 
     value_to_compare = ["name"]
 
@@ -85,7 +85,8 @@ def merge_lists(base_url):
         mm_dict = mm[i]
         for key in value_to_compare:
             try:
-                mm_dict.update({"major":Mm[i]['major']})
+               # mm_dict.update({"major":Mm[i]['major']})
+                mm_dict.update({"major":100})
             except KeyError:
                 print("key {} not found".format(key))
             except:

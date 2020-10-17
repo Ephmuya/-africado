@@ -86,13 +86,17 @@ function(){
  $('#major tr').find('td').each (function() {
     var cellText = $(this).html();
    if(cellText == 'yes'){
-   $(this).text("100");
+   $(this).text("1");
    }
    else if (cellText == 'no'){
-    $(this).text("0");
+    $(this).text("1");
    }
  else if (cellText == 'na'){
-    $(this).text("100");
+    $(this).text("1");
+   }
+
+   else{
+       $(this).text("1");
    }
   })
 }
@@ -106,13 +110,17 @@ function(){
  $('#minor tr').find('td').each (function() {
     var cellText = $(this).html();
    if(cellText == 'yes'){
-   $(this).text("95");
+   $(this).text("1");
    }
    else if (cellText == 'no'){
-    $(this).text("50");
+    $(this).text("-1");
    }
  else if (cellText == 'na'){
-    $(this).text("75");
+    $(this).text("0");
+   }
+
+    else{
+    $(this).text("0");
    }
   })
 }
