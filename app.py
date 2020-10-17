@@ -8,7 +8,7 @@ app.config['JSON_SORT_KEYS'] = False
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 complience_data = ROOT_DIR + '/data/complience.csv'
-base = 'http://127.0.0.1:5000'
+base = 'https://africado.herokuapp.com'
 @app.route('/')
 def dashboard():
 
